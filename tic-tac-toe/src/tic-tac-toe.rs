@@ -20,7 +20,7 @@ fn main() {
             _ => {
                 println!("Invalid input, try again.");
                 continue;
-            },
+            }
         };
 
         if board[index] != ' ' {
@@ -91,10 +91,7 @@ fn wait_for_input() {
 
 fn clear_console() {
     if cfg!(target_os = "windows") {
-        Command::new("cmd")
-            .args(&["/C", "cls"])
-            .status()
-            .unwrap();
+        Command::new("cmd").args(&["/C", "cls"]).status().unwrap();
     } else {
         Command::new("clear").status().unwrap();
     }
