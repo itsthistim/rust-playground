@@ -1,6 +1,10 @@
 use std::io::stdin;
 use std::process::Command;
 
+const ANSI_COLOR_RESET: &str = "\x1b[0m";
+const ANSI_COLOR_GRAY: &str = "\x1b[90m";
+const ANSI_COLOR_YELLOW: &str = "\x1b[33m";
+
 fn main() {
     let mut board = vec![' '; 9];
     const PLAYER1: char = 'X';
@@ -10,7 +14,8 @@ fn main() {
 
     loop {
         print_board(&board);
-        println!("Player {}, enter your move (0-8):", current_player);
+
+        println!("\nPlayer {}, enter your move (0-8): ", current_player);
 
         let mut input = String::new();
         stdin().read_line(&mut input).unwrap();
@@ -32,7 +37,7 @@ fn main() {
 
         if let Some(winner) = check_winner(&board) {
             print_board(&board);
-            println!("Player {} wins!", winner);
+            println!("\nPlayer {} wins!", winner);
 
             wait_for_input();
             break;
@@ -40,7 +45,7 @@ fn main() {
 
         if board.iter().all(|&x| x != ' ') {
             print_board(&board);
-            println!("It's a draw!");
+            println!("\nIt's a draw!");
 
             wait_for_input();
             break;
@@ -48,15 +53,6 @@ fn main() {
 
         current_player = if current_player == PLAYER1 { PLAYER2 } else { PLAYER1 };
     }
-}
-
-fn print_board(board: &Vec<char>) {
-    clear_console();
-    println!(" {} | {} | {}", board[0], board[1], board[2]);
-    println!("---|---|---");
-    println!(" {} | {} | {}", board[3], board[4], board[5]);
-    println!("---|---|---");
-    println!(" {} | {} | {}", board[6], board[7], board[8]);
 }
 
 fn check_winner(board: &Vec<char>) -> Option<char> {
@@ -84,9 +80,14 @@ fn check_winner(board: &Vec<char>) -> Option<char> {
     None
 }
 
-fn wait_for_input() {
-    let mut input = String::new();
-    stdin().read_line(&mut input).unwrap();
+fn print_board(board: &Vec<char>) {
+    clear_console();
+
+    println!(" {} {} {} {} {}", format_cell(board[0], 0), color_string("|", ANSI_COLOR_YELLOW), format_cell(board[1], 1), color_string("|", ANSI_COLOR_YELLOW), format_cell(board[2], 2));
+    println!("{}", color_string("---|---|---", ANSI_COLOR_YELLOW));
+    println!(" {} {} {} {} {}", format_cell(board[3], 3), color_string("|", ANSI_COLOR_YELLOW), format_cell(board[4], 4), color_string("|", ANSI_COLOR_YELLOW), format_cell(board[5], 5));
+    println!("{}", color_string("---|---|---", ANSI_COLOR_YELLOW));
+    println!(" {} {} {} {} {}", format_cell(board[6], 6), color_string("|", ANSI_COLOR_YELLOW), format_cell(board[7], 7), color_string("|", ANSI_COLOR_YELLOW), format_cell(board[8], 8));
 }
 
 fn clear_console() {
@@ -96,3 +97,22 @@ fn clear_console() {
         Command::new("clear").status().unwrap();
     }
 }
+
+fn format_cell(cell: char, index: usize) -> String {
+    if cell == ' ' {
+        color_string(index.to_string().as_str(), ANSI_COLOR_GRAY)
+    } else {
+        cell.to_string()
+    }
+}
+
+fn color_string(str: &str, color: &str) -> String {
+    format!("{}{}{}", color, str, ANSI_COLOR_RESET)
+}
+
+
+fn wait_for_input() {
+    let mut input = String::new();
+    stdin().read_line(&mut input).unwrap();
+}
+
