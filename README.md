@@ -1,5 +1,5 @@
 # 🦀 Rust Playground
-Welcome to the Rust Learning Projects repository! This repository is designed to help beginners get started with learning Rust programming language through simple projects.
+Welcome to my Rust Learning repository! I made this repository to get started with learning Rust through simple projects.
 
 ## Getting Started
 To run a Rust app from this repository, make sure you have Rust and Cargo installed on your system. If you haven't installed Rust yet, you can do so by following the instructions on the [official Rust website](https://www.rust-lang.org/learn/get-started).
